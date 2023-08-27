@@ -1,0 +1,21 @@
+(Esta linea de abajo se uso para el punto 1.1)
+
+awk -F "," '{print $3 }' indices_refraccion.csv > materiales.txt
+
+
+(Este resto se uso para el punto 1.2)
+
+input_file="indices_refraccion.csv" 
+x=0
+while IFS=$',' read -r categoria fabricante material url; do 
+
+((x++))
+if [ "$x" -eq 1 ]; then 
+continue 
+fi
+
+mkdir -p "$categoria"
+
+wget "$url" -P "$categoria"
+
+done < "$input_file"
