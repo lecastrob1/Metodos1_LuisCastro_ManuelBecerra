@@ -31,7 +31,7 @@ class Mineral:
         ax.set_ylim(0, 1)
         ax.axis('off')
         plt.show()
-    
+
     def print_info(atr):
         
         if atr.rompimiento_por_fractura == "TRUE":
