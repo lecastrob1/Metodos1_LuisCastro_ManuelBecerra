@@ -4,25 +4,29 @@ class Mineral:
     
     def __init__(atr, nombre, dureza, rompimiento_por_fractura, color, composicion, ilustre, specific_gravity, sistema_cristalino):
         atr.nombre = nombre
-        atr.dureza = dureza
+        atr.dureza = float(dureza)
         atr.ilustre = ilustre
         atr.rompimiento_por_fractura = rompimiento_por_fractura
         atr.color = color
         atr.composicion = composicion
         atr.sistema_cristalino = sistema_cristalino
-        atr.specific_gravity = specific_gravity
+        atr.specific_gravity = float(specific_gravity)
     
     def check_silicato(atr):
+        
         if "O" in atr.composicion and "Si" in atr.composicion:
-            print("El "+atr.nombre+" SI es un silicato")
+            check = True
         else:
-            print("El "+atr.nombre+" NO es un silicato")
+            check = False
+    
+        return(check)
     
     def calcular_densidad(atr):
         
         densidad = atr.specific_gravity*1000
         
-        print("La densidad de "+atr.nombre+" es " + str(densidad) + "kg/m3")
+        
+        return(densidad)
 
     def visualizar_color(atr):
         fig, ax = plt.subplots(figsize=(1, 1))
@@ -31,7 +35,7 @@ class Mineral:
         ax.set_ylim(0, 1)
         ax.axis('off')
         plt.show()
-
+    
     def print_info(atr):
         
         if atr.rompimiento_por_fractura == "TRUE":
