@@ -43,7 +43,3 @@ def leer_datos(nombre_material):
                 break
                 
     return duplas                        
-
-
-nombre_material = str(input("Por favor, ingresa el nombre del material: "))
-print(leer_datos(nombre_material))
