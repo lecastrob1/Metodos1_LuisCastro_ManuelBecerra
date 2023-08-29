@@ -75,9 +75,9 @@ def graficar_datos(nombre_material):
     # Guarda el gráfico en la carpeta correspondiente a la categoría del material
     plt.savefig(os.path.join(carpeta, f'{nombre_material}.png'))
 
-# Lee todos los nombres de materiales en indices_refraccion.csv y grafica cada uno
-with open('indices_refraccion.csv', 'r', encoding='utf-8') as archivo:
-    lector = csv.reader(archivo,delimiter=',')
+# Lee todos los nombres de materiales en materiales.txt y grafica cada uno
+with open('materiales.txt', 'r', encoding='utf-8') as archivo:
+    lector = csv.reader(archivo)
     next(lector)  # Salta la primera fila
     for fila in lector:
-        graficar_datos(fila[2])
+        graficar_datos(fila[0])
