@@ -42,9 +42,6 @@ def leer_datos(nombre_material):
             if len(palabras) == 2 and all(palabra.lstrip('-').replace('.','',1).isdigit() for palabra in palabras):
                 # Guarda las palabras como una dupla
                 duplas.append(tuple(palabras))
-            
-            # Termina cuando encuentra una línea vacía o las palabras "SPECS:"
-            elif len(palabras) == 0 or "SPECS:" in linea:
                 break
                 
     return duplas, carpeta
