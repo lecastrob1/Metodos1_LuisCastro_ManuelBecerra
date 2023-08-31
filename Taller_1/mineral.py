@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 class Mineral: 
     
     def __init__(atr, nombre, dureza, rompimiento_por_fractura, color, composicion, ilustre, specific_gravity, sistema_cristalino):
