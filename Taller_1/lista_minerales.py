@@ -1,5 +1,5 @@
 
-from mineral.py import Mineral
+from mineral import Mineral
 minerales_arreglo = []
 
 archivo = 'minerales.txt'
