@@ -1,46 +1,71 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import sympy as sym
 
+#llama al archivo
 archivo = 'Parabolico.csv'
+#produce dos listas vacias para los puntos en x y y
 puntos_x = []
 puntos_y = []
 
+#se abre y lee el archivo Parabolico.csv
 with open(archivo, 'r', encoding='latin-1') as file:
     lines = file.readlines()
-   
+
+#se salta la primera linea
 for index, line in enumerate(lines):
     if index == 0:
         continue  
-    
+#se separan los numeros y agrega el punto a la lista del axis correspondiente
     puntos = line.strip().split(',')
     puntos_x.append(puntos[0])
     puntos_y.append(puntos[1])
 
-X = np.array(puntos_x)
-Y = np.array(puntos_y)
+#se asigna un arreglo a las listas y hace los valores adentros floats
+X = np.array(puntos_x, dtype=float)
+Y = np.array(puntos_y, dtype=float)
 
-def Lagrange(x,X,i):
+#funcion de interpolacion 
+def InterpolacionNewton(X,Y,x):
     
-    L = 1
+    sum_ = Y[0]
     
-    for j in range(X.shape[0]):
-        if i != j:
-            L *= (x - X[j])/(X[i]-X[j])
-            
-    return L
+    Diff = np.zeros(( X.shape[0],Y.shape[0] ))
+    h = X[1]-X[0]
+    
+    Diff[:,0] = Y
 
-def Interpolate(x,X,Y):
+    poly = 1.
     
-    Poly = 0
-    
-    for i in range(X.shape[0]):
-        Poly += Lagrange(x,X,i)*Y[i]
+    for i in range(1,len(X)):
         
-    return Poly
+        poly *= (x-X[i-1])
+        
+        for j in range(i,len(X)):
+            
+            Diff[j,i] = Diff[j,i-1] - Diff[j-1,i-1] 
+    
+        sum_ += poly*Diff[i,i]/(np.math.factorial(i)*h**(i))
+        
+    return sum_
 
-x = np.linspace(-2.,3.,100)
-y = Interpolate(x,X,Y)
+#se ejecuta la interpolacion
+xt = np.linspace(np.min(X),np.max(X),100)
+yt = []
 
-plt.plot(x,y,color='k',label='OK')
-plt.scatter(X,Y,color='r',marker='o')
-plt.legend()
+for x in xt:
+    yt.append(InterpolacionNewton(X,Y,x))
+    
+#se grafica
+plt.scatter(X,Y,color='r')
+plt.plot(xt,yt,color='b')
+plt.title("Grafica de Interpolacion")
+plt.xlabel("Posicion x")
+plt.ylabel("Posicion y")
+plt.show()
+
+#esta parte te escribe la ecuacion de interpolacion
+x = sym.Symbol('x',real=True)
+y = InterpolacionNewton(X,Y,x)
+y = sym.simplify(y)
+print(y)
