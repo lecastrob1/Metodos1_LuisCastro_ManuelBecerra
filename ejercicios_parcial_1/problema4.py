@@ -68,4 +68,13 @@ plt.show()
 x = sym.Symbol('x',real=True)
 y = InterpolacionNewton(X,Y,x)
 y = sym.simplify(y)
-print(y)
+
+def hallar_v0_te(X,Y):
+    teta=np.arctan(0.363970234266202)
+    muesteta=np.around(np.degrees(teta))
+    cor=np.cos(teta)
+    tar=np.tan(teta)
+    V2=(9.8*(X[0]**2))/(2*((cor)**2)*((X[0])*(tar)-Y[0]))
+    V=np.sqrt(V2)
+    return V,muesteta
+print(hallar_v0_te(X,Y))
