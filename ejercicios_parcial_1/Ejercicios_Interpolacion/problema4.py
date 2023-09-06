@@ -57,12 +57,13 @@ plt.title("Grafica de Interpolacion")
 plt.xlabel("Posicion x")
 plt.ylabel("Posicion y")
 plt.legend()
+plt.show()
 
 #se produce la ecuacion
 x = sym.Symbol('x',real=True)
 y = Interpolate(x,X,Y)
 y = sym.simplify(y)
-print("La ecuacion de la grafica es "+y)
+print("La ecuacion de la grafica es "+str(y))
 
 def hallar_v0_te(X,Y):
     teta=np.arctan(0.363970234266202)
