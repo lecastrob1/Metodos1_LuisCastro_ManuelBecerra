@@ -10,13 +10,13 @@ puntos_y = []
 
 #se abre y lee el archivo Parabolico.csv
 with open(archivo, 'r', encoding='latin-1') as file:
-    lines = file.readlines()
+    Puntos = file.readlines()
 
-#se salta la primera linea
-for index, line in enumerate(lines):
+#se salta la primera linea 
+for index, line in enumerate(Puntos):
     if index == 0:
         continue  
-#se separan los numeros y agrega el punto a la lista del axis correspondiente
+#se separan los numeros y agrega el punto a la lista del axis correspondiente  
     puntos = line.strip().split(',')
     puntos_x.append(puntos[0])
     puntos_y.append(puntos[1])
@@ -25,49 +25,44 @@ for index, line in enumerate(lines):
 X = np.array(puntos_x, dtype=float)
 Y = np.array(puntos_y, dtype=float)
 
-#funcion de interpolacion 
-def InterpolacionNewton(X,Y,x):
+#se define el lagrange que va ayudar para la interpolacion
+def Lagrange(x,X,i):
     
-    sum_ = Y[0]
+    L = 1
     
-    Diff = np.zeros(( X.shape[0],Y.shape[0] ))
-    h = X[1]-X[0]
-    
-    Diff[:,0] = Y
-
-    poly = 1.
-    
-    for i in range(1,len(X)):
-        
-        poly *= (x-X[i-1])
-        
-        for j in range(i,len(X)):
+    for j in range(X.shape[0]):
+        if i != j:
+            L *= (x - X[j])/(X[i]-X[j])
             
-            Diff[j,i] = Diff[j,i-1] - Diff[j-1,i-1] 
+    return L
+
+#se define la interpolacion
+def Interpolate(x,X,Y):
     
-        sum_ += poly*Diff[i,i]/(np.math.factorial(i)*h**(i))
+    Poly = 0
+    
+    for i in range(X.shape[0]):
+        Poly += Lagrange(x,X,i)*Y[i]
         
-    return sum_
+    return Poly
 
-#se ejecuta la interpolacion
-xt = np.linspace(np.min(X),np.max(X),100)
-yt = []
+#se asigna
+x = np.linspace(min(X),max(X),100)
+y = Interpolate(x,X,Y)
 
-for x in xt:
-    yt.append(InterpolacionNewton(X,Y,x))
-    
 #se grafica
-plt.scatter(X,Y,color='r')
-plt.plot(xt,yt,color='b')
+plt.plot(x,y,color='k')
+plt.scatter(X,Y,color='r',marker='o')
 plt.title("Grafica de Interpolacion")
 plt.xlabel("Posicion x")
 plt.ylabel("Posicion y")
-plt.show()
+plt.legend()
 
-#esta parte te escribe la ecuacion de interpolacion
+#se produce la ecuacion
 x = sym.Symbol('x',real=True)
-y = InterpolacionNewton(X,Y,x)
+y = Interpolate(x,X,Y)
 y = sym.simplify(y)
+print("La ecuacion de la grafica es "+y)
 
 def hallar_v0_te(X,Y):
     teta=np.arctan(0.363970234266202)
