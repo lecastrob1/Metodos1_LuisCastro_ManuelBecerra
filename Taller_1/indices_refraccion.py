@@ -4,6 +4,13 @@ import unicodedata
 import matplotlib.pyplot as plt
 import numpy as np
 
+def is_number(palabra):
+    try:
+        float(palabra)
+        return True
+    except ValueError:
+        return False
+
 def buscar_material(nombre_material):
     # Abre el archivo CSV
     with open('indices_refraccion.csv', 'r', encoding='utf-8') as archivo:
@@ -39,9 +46,11 @@ def leer_datos(nombre_material):
             palabras = linea.split()
             
             # Comprueba si las palabras son números
-            if len(palabras) == 2 and all(palabra.lstrip('-').replace('.','',1).isdigit() for palabra in palabras):
+            if len(palabras) == 2 and all(is_number(palabra) for palabra in palabras):
                 # Guarda las palabras como una dupla
+                
                 duplas.append(tuple(palabras))
+            else:
                 break
                 
     return duplas, carpeta
@@ -73,8 +82,10 @@ def graficar_datos(nombre_material):
     plt.savefig(os.path.join(carpeta, f'{nombre_material}.png'))
 
 # Lee todos los nombres de materiales en materiales.txt y grafica cada uno
-with open('materiales.txt', 'r', encoding='utf-8') as archivo:
-    lector = csv.reader(archivo)
-    next(lector)  # Salta la primera fila
-    for fila in lector:
-        graficar_datos(fila[0])
+
+
+with open('indices_refraccion.csv', 'r', encoding='utf-8') as archivo:
+        lector = csv.reader(archivo,delimiter=',')
+        next(lector)
+        for fila in lector:
+         graficar_datos(fila[2])
