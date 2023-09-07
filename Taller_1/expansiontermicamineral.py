@@ -54,5 +54,7 @@ class ExpansionTermicaMineral():
             plt.show
             
             error_global=np.std(coeficientes)/np.sqrt(len(coeficientes))
+
+            promedio = sum(coeficientes)/len(coeficientes)
             
-            return plt, error_global
+            return error_global, promedio
