@@ -1,7 +1,10 @@
-class ExpansionTermicaMineral:
+from mineral import Mineral #llama la clase de otro .py+
+import numpy as np
+import matplotlib.pyplot as plt
+
+class ExpansionTermicaMineral():
     
     def __init__(self, archivo):
-        self.nombre = nombre
         self.puntos_T = []
         self.puntos_V = []
         self.archivo = archivo
@@ -18,9 +21,7 @@ class ExpansionTermicaMineral:
             self.puntos_T.append(float(puntos[0]))
             self.puntos_V.append(float(puntos[1]))
         
-    def calcular_lista_coeficientes(self):
-        
-            
+    def calcular_y_graficar(self):
             coeficientes = list()
             i=0
             
@@ -35,27 +36,23 @@ class ExpansionTermicaMineral:
                 a = (1/Y1)*derivada
                 coeficientes.append(a)
                 i += 1
-            return(coeficientes, self.puntos_T, self.puntos_V)
-        
 
-def calcular_y_graficar(archivo):
-
-    material = ExpansionTermicaMineral(archivo)
-    coeficientes = material.calcular_lista_coeficientes()[0]
-    temperatura = material.calcular_lista_coeficientes()[1]
-    volumen = material.calcular_lista_coeficientes()[2]
-    
-    
-    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
-    
-    axs[0].plot(temperatura,volumen,label='',color='b')
-    axs[0].set_xlabel('T(C)')
-    axs[0].set_ylabel('V(cm3)')
-    axs[0].set_title('Volumen vs Temperatura')
-    
-    
-    axs[1].plot(temperatura,coeficientes,label='',color='r')
-    axs[1].set_xlabel('T(C)')
-    axs[1].set_ylabel('a')
-    axs[1].set_title('Coeficiente vs Temperatura')
-    axs[1].set_ylim(0, 0.0001)
+            
+            fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+            
+            axs[0].plot(self.puntos_T,self.puntos_V,label='',color='b')
+            axs[0].set_xlabel('T(C)')
+            axs[0].set_ylabel('V(cm3)')
+            axs[0].set_title('Volumen vs Temperatura')
+            
+            
+            axs[1].plot(self.puntos_T,coeficientes,label='',color='r')
+            axs[1].set_xlabel('T(C)')
+            axs[1].set_ylabel('a')
+            axs[1].set_title('Coeficiente vs Temperatura')
+            axs[1].set_ylim(0, 0.0001)
+            plt.show
+            
+            error_global=np.std(coeficientes)/np.sqrt(len(coeficientes))
+            
+            return plt, error_global
