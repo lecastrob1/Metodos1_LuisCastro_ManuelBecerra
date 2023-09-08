@@ -2,7 +2,7 @@ from mineral import Mineral #llama la clase de otro .py+
 import numpy as np
 import matplotlib.pyplot as plt
 
-class ExpansionTermicaMineral():
+class ExpansionTermicaMineral(Mineral):
     
     def __init__(self, archivo):
         self.puntos_T = []
@@ -51,7 +51,6 @@ class ExpansionTermicaMineral():
             axs[1].set_ylabel('a')
             axs[1].set_title('Coeficiente vs Temperatura')
             axs[1].set_ylim(0, 0.0001)
-            plt.show
             
             error_global=np.std(coeficientes)/np.sqrt(len(coeficientes))
 
